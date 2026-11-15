@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生活購物大冒險</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: #FFF7E8;
+  color: #3D3540;
+  font-size: 20px;
+  text-align: center;
+}
+
+header {
+  background: #FFD27F;
+  padding: 22px;
+}
+
+header h1 {
+  margin: 0;
+  color: #654321;
+}
+
+button {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 13px 22px;
+  border: none;
+  border-radius: 15px;
+  margin: 7px;
+  background: #4D9B75;
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
+  filter: brightness(.92);
+}
+
+button:focus-visible {
+  outline: 4px solid #222;
+  outline-offset: 3px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 25px auto;
+  padding: 15px;
+}
+
+.card {
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px #ddd;
+}
+
+.hidden {
+  display: none !important;
+}
+
+h2 {
+  color: #347A5A;
+}
+
+.big {
+  font-size: 28px;
+}
+
+.emoji {
+  font-size: 55px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.item {
+  background: #FFF0D0;
+  color: #493B2B;
+  border: 3px solid transparent;
+  min-height: 130px;
+}
+
+.item:hover {
+  border-color: #EBAF4D;
+}
+
+.selected {
+  background: #D8F5E3 !important;
+  border: 3px solid #369968 !important;
+}
+
+.wrong {
+  background: #FFE0E0 !important;
+  border: 3px solid #D9534F !important;
+  animation: shake .3s;
+}
+
+@keyframes shake {
+  0%,100% {transform:translateX(0)}
+  25% {transform:translateX(-6px)}
+  75% {transform:translateX(6px)}
+}
+
+.feedback {
+  min-height: 45px;
+  font-weight: bold;
+  color: #347A5A;
+  margin: 15px;
+}
+
+.progress {
+  background: #eee;
+  height: 15px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: #4D9B75;
+  transition: width .5s;
+}
+
+.list {
+  background: #FFF8EA;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 15px auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.list p {
+  border-bottom: 1px dashed #ccc;
+  padding: 8px;
+}
+
+.calculator {
+  max-width: 330px;
+  margin: auto;
+  background: #E9F1ED;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+#display {
+  background: white;
+  padding: 15px;
+  text-align: right;
+  font-size: 30px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  min-height: 60px;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+}
+
+.keys button {
+  background: white;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #0009;
+  display: grid;
+  place-items: center;
+  padding: 15px;
+  z-index: 10;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  max-width: 550px;
+  width: 100%;
+}
+
+.video-scene {
+  background: #FFF0CE;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.scene-emoji {
+  font-size: 90px;
+  animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+  to {transform:translateY(-12px)}
+}
+
+.check {
+  display: block;
+  padding: 12px;
+  text-align: left;
+  background: #EFF8F0;
+  border-radius: 12px;
+  margin: 10px;
+}
+
+body.large {
+  font-size: 24px;
+}
+
+body.contrast {
+  background: black;
+  color: white;
+}
+
+body.contrast .card {
+  background: #222;
+  color: white;
+}
+
+body.contrast button {
+  border: 2px solid white;
+}
+
+@media(max-width:600px) {
+  .container {padding: 8px}
+  .card {padding: 15px}
+  button {font-size: 18px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🛒 生活購物大冒險</h1>
+<p>一起學習生活購物技能！</p>
+<button onclick="toggleFont()">A+ 放大文字</button>
+<button onclick="toggleContrast()">高對比</button>
+<button onclick="toggleSound()" id="soundButton">🔊 聲音開啟</button>
+</header>
+
+<div class="container">
+
+<!-- 首頁 -->
+
+<section id="home" class="card">
+
+<div class="big">🏪 🧺 🥖</div>
+
+<h2>歡迎來到生活購物大冒險！</h2>
+
+<p>今天我們要學習如何自己購物！</p>
+
+<p>準備好就開始吧！</p>
+
+<button onclick="startGame()">開始遊戲 ▶</button>
+
+</section>
+
+<!-- 遊戲區 -->
+
+<section id="game" class="card hidden">
+
+<p id="stage">第一關／共六關</p>
+
+<div class="progress">
+<div id="progressBar"></div>
+</div>
+
+<div class="big" id="character">🐻</div>
+
+<h2 id="title"></h2>
+
+<p id="description"></p>
+
+<div id="content"></div>
+
+<div id="feedback" class="feedback"
+aria-live="polite"></div>
+
+<button onclick="showHint()">💡 提示</button>
+
+<button id="nextButton"
+class="hidden"
+onclick="nextStage()">下一步 →</button>
+
+</section>
+
+<!-- 完成畫面 -->
+
+<section id="finish" class="card hidden">
+
+<div class="big">🎉 🏆 🎈</div>
+
+<h2>恭喜你完成購物任務！</h2>
+
+<p>你已經成為生活購物小達人！</p>
+
+<p id="result"></p>
+
+<div class="big" id="homeAnimation">🏡 🐻</div>
+
+<button onclick="location.reload()">再玩一次</button>
+
+</section>
+
+</div>
+
+<!-- 前導影片視窗 -->
+
+<div id="videoModal" class="modal hidden">
+
+<div class="modal-content">
+
+<h2 id="videoTitle">購物小教室</h2>
+
+<div class="video-scene">
+
+<div class="scene-emoji" id="videoEmoji">🥬</div>
+
+<p id="videoText"></p>
+
+</div>
+
+<button onclick="replayVideo()">🔄 重新播放</button>
+
+<button onclick="closeVideo()">跳過影片 →</button>
+
+</div>
+
+</div>
+
+<script>
+
+// 商品分類資料
+
+const categories = [
+
+{
+name:"買食材",
+emoji:"🥬",
+video:"家裡需要食材，可以到市場或超市購買。",
+store:"超市",
+stores:["超市","藥局","文具店"],
+items:[
+["🥚","雞蛋",45],
+["🥬","青菜",30],
+["🍞","麵包",35],
+["🧴","洗髮精",89]
+]
+},
+
+{
+name:"身體清潔用品",
+emoji:"🧴",
+video:"洗髮精、肥皂和沐浴乳可以幫助我們清潔身體。",
+store:"藥妝店",
+stores:["藥妝店","玩具店","書店"],
+items:[
+["🧴","洗髮精",89],
+["🧼","肥皂",35],
+["🪥","牙刷",39],
+["🍪","餅乾",25]
+]
+},
+
+{
+name:"個人衛生用品",
+emoji:"🪥",
+video:"牙刷、牙膏是日常生活中的個人衛生用品。",
+store:"藥妝店",
+stores:["藥妝店","服飾店","飲料店"],
+items:[
+["🪥","牙刷",39],
+["🦷","牙膏",65],
+["🧻","衛生紙",35],
+["🧸","玩偶",120]
+]
+},
+
+{
+name:"零食",
+emoji:"🍪",
+video:"餅乾、巧克力和零食可以在便利商店購買。",
+store:"便利商店",
+stores:["便利商店","藥局","服飾店"],
+items:[
+["🍪","餅乾",25],
+["🍫","巧克力",35],
+["🍟","洋芋片",40],
+["🧴","洗髮精",89]
+]
+},
+
+{
+name:"文具",
+emoji:"✏️",
+video:"鉛筆、橡皮擦和筆記本都是文具。",
+store:"文具店",
+stores:["文具店","餐廳","藥局"],
+items:[
+["✏️","鉛筆",12],
+["🧽","橡皮擦",10],
+["📒","筆記本",30],
+["🍞","麵包",35]
+]
+},
+
+{
+name:"玩具",
+emoji:"🧸",
+video:"玩具可以到玩具店選購。",
+store:"玩具店",
+stores:["玩具店","市場","藥妝店"],
+items:[
+["🧸","玩偶",120],
+["🚗","玩具車",99],
+["🧱","積木",150],
+["🪥","牙刷",39]
+]
+},
+
+{
+name:"藥品",
+emoji:"💊",
+video:"需要藥品時，應該到藥局，並請藥師或照顧者協助。",
+store:"藥局",
+stores:["藥局","玩具店","文具店"],
+medicine:true,
+items:[
+["🩹","OK繃",35],
+["🌡️","體溫計",120],
+["🍫","巧克力",35],
+["🧸","玩偶",120]
+]
+},
+
+{
+name:"衣服",
+emoji:"👕",
+video:"衣服可以到服飾店購買。",
+store:"服飾店",
+stores:["服飾店","便利商店","書店"],
+items:[
+["👕","上衣",250],
+["🧦","襪子",60],
+["🧢","帽子",120],
+["🥚","雞蛋",45]
+]
+}
+
+];
+
+let category;
+let stage = 1;
+let cart = [];
+let priceDone = [];
+let checks = [false,false,false,false];
+let score = 0;
+let soundOn = true;
+
+function speak(text) {
+
+if(!soundOn) return;
+
+if("speechSynthesis" in window) {
+
+speechSynthesis.cancel();
+
+let speech = new SpeechSynthesisUtterance(text);
+
+speech.lang = "zh-TW";
+speech.rate = 0.9;
+
+speechSynthesis.speak(speech);
+
+}
+
+}
+
+function toggleSound() {
+
+soundOn = !soundOn;
+
+document.getElementById("soundButton").innerText =
+soundOn ? "🔊 聲音開啟" : "🔇 聲音關閉";
+
+if(!soundOn && "speechSynthesis" in window) {
+speechSynthesis.cancel();
+}
+
+}
+
+function toggleFont() {
+document.body.classList.toggle("large");
+}
+
+function toggleContrast() {
+document.body.classList.toggle("contrast");
+}
+
+function startGame() {
+
+category = categories[
+Math.floor(Math.random()*categories.length)
+];
+
+cart = [];
+priceDone = [];
+score = 0;
+stage = 1;
+
+document.getElementById("home").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
+
+showStage1();
+
+}
+
+// 共用畫面
+
+function setStage(title,description,html,emoji) {
+
+document.getElementById("title").innerText = title;
+
+document.getElementById("description").innerText = description;
+
+document.getElementById("content").innerHTML = html;
+
+document.getElementById("character").innerText = emoji;
+
+document.getElementById("feedback").innerText = "";
+
+document.getElementById("nextButton").classList.add("hidden");
+
+document.getElementById("stage").innerText =
+"第 "+stage+" 關／共六關";
+
+document.getElementById("progressBar").style.width =
+(stage/6*100)+"%";
+
+}
+
+// 第一關
+
+function showStage1() {
+
+stage = 1;
+
+setStage(
+"第一關：購物前準備",
+"今天我們要購買這一類商品。",
+`
+<div class="big">${category.emoji}</div>
+<h3>${category.name}</h3>
+<p>先看看購物小教室，認識購物需求。</p>
+`,
+"🐻"
+);
+
+document.getElementById("nextButton").innerText =
+"進入購物小教室";
+
+document.getElementById("nextButton").classList.remove("hidden");
+
+document.getElementById("nextButton").onclick = showVideo;
+
+}
+
+function showVideo() {
+
+document.getElementById("videoModal").classList.remove("hidden");
+
+document.getElementById("videoTitle").innerText =
+category.name+"｜購物小教室";
+
+document.getElementById("videoEmoji").innerText =
+category.emoji;
+
+document.getElementById("videoText").innerText =
+category.video;
+
+speak(category.video);
+
+}
+
+function replayVideo() {
+
+showVideo();
+
+}
+
+function closeVideo() {
+
+document.getElementById("videoModal").classList.add("hidden");
+
+showStage2();
+
+}
+
+// 第二關
+
+function showStage2() {
+
+stage = 2;
+
+let html = `<div class="grid">`;
+
+category.stores.forEach((store,i)=>{
+
+let emoji = ["🏪","💊","✏️","👕","🧸"][i] || "🏬";
+
+html += `
+<button class="item" onclick="checkStore(this,'${store}')">
+<span class="emoji">${emoji}</span>
+${store}
+</button>
+`;
+
+});
+
+html += `</div>`;
+
+setStage(
+"第二關：尋找商店",
+"我要買"+category.name+"，應該去哪裡？",
+html,
+"🧭"
+);
+
+}
+
+function checkStore(button,store) {
+
+if(store === category.store) {
+
+button.classList.add("selected");
+
+score++;
+
+feedback("答對了！我們找到正確的商店了！",true);
+
+document.getElementById("nextButton").classList.remove("hidden");
+
+document.getElementById("nextButton").onclick = showStage3;
+
+} else {
+
+button.classList.add("wrong");
+
+let text = category.medicine
+? "店員說：不好意思，這裡沒有販售藥品。需要藥品請到藥局，並詢問藥師或照顧者。"
+: "店員說：不好意思，這裡沒有販售這類商品。你可以到"+category.store+"找找看。";
+
+feedback(text,false);
+
+speak(text);
+
+setTimeout(()=>{
+button.classList.remove("wrong");
+},800);
+
+}
+
+}
+
+// 第三關
+
+function showStage3() {
+
+stage = 3;
+
+cart = [];
+
+let targets = category.items.slice(0,2);
+
+let html = `
+<div class="list">
+<h3>📝 我的購物清單</h3>
+${targets.map(x=>`<p id="need${x[1]}">⬜ ${x[1]}</p>`).join("")}
+</div>
+<h3>請找出正確商品</h3>
+<div class="grid">
+`;
+
+category.items.forEach((item,i)=>{
+
+html += `
+<button class="item" onclick="chooseProduct(this,${i})">
+<span class="emoji">${item[0]}</span>
+${item[1]}
+<span id="mark${i}"></span>
+</button>
+`;
+
+});
+
+html += `</div>
+<div class="list">
+🛒 購物車：
+<span id="cartText">目前沒有商品</span>
+</div>`;
+
+setStage(
+"第三關：尋找商品",
+"請依照購物清單，點選需要購買的商品。",
+html,
+"🛒"
+);
+
+}
+
+function chooseProduct(button,index) {
+
+let item = category.items[index];
+
+let targets = category.items.slice(0,2);
+
+let correct = targets.some(x=>x[1]===item[1]);
+
+if(!correct) {
+
+button.classList.add("wrong");
+
+document.getElementById("mark"+index).innerText = "❌";
+
+feedback("這不是清單上的商品，再找找看！",false);
+
+speak("這不是清單上的商品，再找找看。");
+
+setTimeout(()=>{
+button.classList.remove("wrong");
+document.getElementById("mark"+index).innerText = "";
+},900);
+
+return;
+
+}
+
+if(cart.some(x=>x[1]===item[1])) {
+
+feedback("這個商品已經放進購物車了！",false);
+
+return;
+
+}
+
+cart.push(item);
+
+button.classList.add("selected");
+
+document.getElementById("mark"+index).innerText = "✓";
+
+document.getElementById("need"+item[1]).innerText =
+"☑ "+item[1]+" 已找到";
+
+document.getElementById("cartText").innerText =
+cart.map(x=>x[0]+x[1]).join("、");
+
+feedback("太棒了！商品已經放進購物車！",true);
+
+if(cart.length===2) {
+
+document.getElementById("nextButton").classList.remove("hidden");
+
+document.getElementById("nextButton").onclick = showStage4;
+
+}
+
+}
+
+// 第四關
+
+function showStage4() {
+
+stage = 4;
+
+priceDone = [];
+
+let html = `
+<div class="list">
+<h3>🛒 購物車商品價格</h3>
+`;
+
+cart.forEach((item,i)=>{
+
+html += `
+<p>${item[0]} ${item[1]}：
+<b>${item[2]}元</b>
+<span id="price${i}">⬜ 待確認</span>
+</p>
+`;
+
+});
+
+html += `
+</div>
+<p>請使用下方計算機輸入商品價格。</p>
+<div class="calculator">
+<div id="display">0</div>
+<div class="keys">
+`;
+
+["1","2","3","4","5","6","7","8","9","清除","0","確認"].forEach(k=>{
+
+html += `<button onclick="calc('${k}')">${k}</button>`;
+
+});
+
+html += `</div></div>
+<h3 id="total"></h3>`;
+
+setStage(
+"第四關：確認價格",
+"請看看商品標價，輸入正確的商品價格。",
+html,
+"🧮"
+);
+
+window.calcValue = "";
+
+}
+
+function calc(key) {
+
+if(key==="清除") {
+
+window.calcValue = "";
+
+document.getElementById("display").innerText = "0";
+
+return;
+
+}
+
+if(key==="確認") {
+
+let number = Number(window.calcValue);
+
+let index = cart.findIndex((item,i)=>
+item[2]===number && !priceDone.includes(i)
+);
+
+if(index===-1) {
+
+feedback("價格不正確，或已經確認過，請再看看標價。",false);
+
+return;
+
+}
+
+priceDone.push(index);
+
+document.getElementById("price"+index).innerText = "☑ 已確認";
+
+feedback("答對了！價格確認完成！",true);
+
+window.calcValue = "";
+
+document.getElementById("display").innerText = "0";
+
+if(priceDone.length===cart.length) {
+
+let total = cart.reduce((sum,item)=>sum+item[2],0);
+
+document.getElementById("total").innerText =
+"總金額："+total+" 元";
+
+document.getElementById("nextButton").classList.remove("hidden");
+
+document.getElementById("nextButton").onclick = showStage5;
+
+}
+
+return;
+
+}
+
+if(window.calcValue.length<5) {
+
+window.calcValue += key;
+
+document.getElementById("display").innerText =
+window.calcValue;
+
+}
+
+}
+
+// 第五關
+
+function showStage5() {
+
+stage = 5;
+
+let total = cart.reduce((sum,item)=>sum+item[2],0);
+
+let payment = [50,100,200,500].filter(x=>x>=total);
+
+let html = `
+<div class="list">
+<h3>👩‍💼 店員</h3>
+<p>您好！一共是 ${total} 元。</p>
+<p>請選擇足夠的付款金額。</p>
+</div>
+<div class="grid">
+`;
+
+[total-5,total,total+5,...payment]
+.filter((x,i,a)=>x>0 && a.indexOf(x)===i)
+.forEach(money=>{
+
+html += `
+<button class="item" onclick="pay(${money})">
+<span class="emoji">💵</span>
+${money} 元
+</button>
+`;
+
+});
+
+html += `</div><div id="change"></div>`;
+
+setStage(
+"第五關：結帳付款",
+"請依照店員告知的金額，選擇正確的付款金額。",
+html,
+"👩‍💼"
+);
+
+}
+
+function pay(money) {
+
+let total = cart.reduce((sum,item)=>sum+item[2],0);
+
+if(money<total) {
+
+feedback("金額不夠喔！請再選擇一次。",false);
+
+return;
+
+}
+
+let change = money-total;
+
+document.getElementById("change").innerHTML = `
+<div class="list">
+<h3>店員：謝謝您！</h3>
+<p>付款金額：${money} 元</p>
+<p>找零：${change} 元</p>
+<button onclick="confirmPayment()">我確認了！✓</button>
+</div>
+`;
+
+feedback("請確認店員找給你的錢。",true);
+
+}
+
+function confirmPayment() {
+
+feedback("付款完成！記得拿好商品及找零！",true);
+
+document.getElementById("nextButton").classList.remove("hidden");
+
+document.getElementById("nextButton").onclick = showStage6;
+
+}
+
+// 第六關
+
+function showStage6() {
+
+stage = 6;
+
+let tasks = [
+"商品是否拿齊？",
+"收據是否拿到？",
+"找零是否確認？",
+"隨身物品是否帶好？"
+];
+
+let html = "";
+
+tasks.forEach((task,i)=>{
+
+html += `
+<label class="check">
+<input type="checkbox"
+onchange="checkTask(${i},this)">
+${["🛍️","🧾","💰","🎒"][i]}
+${task}
+</label>
+`;
+
+});
+
+setStage(
+"第六關：完成購物",
+"離開商店前，請確認以下物品。",
+html,
+"🐻"
+);
+
+}
+
+function checkTask(index,checkbox) {
+
+checks[index] = checkbox.checked;
+
+if(checks.every(Boolean)) {
+
+feedback("太棒了！全部確認完成！準備回家囉！",true);
+
+document.getElementById("nextButton").classList.remove("hidden");
+
+document.getElementById("nextButton").innerText =
+"開心回家 🏡";
+
+document.getElementById("nextButton").onclick = finishGame;
+
+}
+
+}
+
+function feedback(text,good) {
+
+let area = document.getElementById("feedback");
+
+area.innerText = text;
+
+area.style.color = good ? "#347A5A" : "#B34A38";
+
+if(good) speak(text);
+
+}
+
+function showHint() {
+
+let hints = [
+"先想想今天需要買什麼。",
+"想想這類商品通常在哪裡買。",
+"仔細對照購物清單。",
+"看看商品旁邊的價格。",
+"先聽清楚店員說的總金額。",
+"確認商品、收據和隨身物品。"
+];
+
+feedback(hints[stage-1],true);
+
+}
+
+function nextStage() {
+
+if(stage===1) showStage2();
+else if(stage===2) showStage3();
+else if(stage===3) showStage4();
+else if(stage===4) showStage5();
+else if(stage===5) showStage6();
+else finishGame();
+
+}
+
+function finishGame() {
+
+document.getElementById("game").classList.add("hidden");
+
+document.getElementById("finish").classList.remove("hidden");
+
+document.getElementById("result").innerText =
+"你完成了「"+category.name+"」購物任務！";
+
+document.getElementById("homeAnimation").innerText =
+"🐻 🛍️ 🏡 🎉";
+
+speak("恭喜你完成購物任務，開心回家囉！");
+
+}
+
+</script>
+
+</body>
+</html>
